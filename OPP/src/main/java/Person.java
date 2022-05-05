@@ -38,10 +38,8 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", personCode=" + personCode +
-                '}';
+        return "Vardas = " + name  +
+                ", Pavarde = " + surname  +
+                ", Asmens Kodas = " + personCode;
     }
 }

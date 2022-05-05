@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -33,7 +32,7 @@ public class Main {
     private void selectAction(Scanner scanner) throws IOException {
         String action;
 
-        do{
+        do {
             menu();
             action = scanner.nextLine();
             switch (action) {
@@ -46,10 +45,10 @@ public class Main {
                 default -> System.out.println("Tokio veiksmo nera");
             }
 
-        } while(!action.equals("3"));
+        } while (!action.equals("3"));
     }
 
-    private void createUser(Scanner scanner){
+    private void createUser(Scanner scanner) {
 
         String fullName = getUniqueName(scanner);
         long personCode = getPersonCode(scanner);
@@ -67,7 +66,7 @@ public class Main {
                 System.out.println("Iveskite vartotojo asmens koda");
                 String personCode = scanner.nextLine();
                 System.out.println(personCode.length());
-                if(personCode.length() != 11){
+                if (personCode.length() != 11) {
                     System.out.println("Asmens kodas turi susideti is 11 skaiciu");
                     continue;
                 }
@@ -80,8 +79,8 @@ public class Main {
         }
     }
 
-    private String getUniqueName(Scanner scanner){
-        while(true){
+    private String getUniqueName(Scanner scanner) {
+        while (true) {
             System.out.println("Iveskite vartotojo Varda ir Pavarde:");
             String newUserName = scanner.nextLine();
             String[] name = newUserName.split(" ");
@@ -107,11 +106,7 @@ public class Main {
 
     private void readFile() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        File file = new File(USER_FILE);
-
-        if (!file.exists()) {
-            file.createNewFile();
-        }
+        File file = createFile();
         if (file.length() != 0) {
             persons = mapper.readValue(file, new TypeReference<>() {
             });
@@ -122,13 +117,18 @@ public class Main {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
+        File file = createFile();
+        if (!persons.isEmpty()) {
+            mapper.writeValue(file, persons);
+        }
+    }
+
+    private File createFile() throws IOException {
         File file = new File(USER_FILE);
         if (!file.exists()) {
             file.createNewFile();
         }
-        if (!persons.isEmpty()) {
-            mapper.writeValue(file, persons);
-        }
+        return file;
     }
 
 }
